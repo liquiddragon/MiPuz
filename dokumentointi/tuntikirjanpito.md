@@ -6,4 +6,6 @@ Projektin aloitustoimia, 1.5t
 13.5
 Projektin aloitustoimia, 0.5t
 
+14.5
+Projektin aloitustoimia, 0.5t
 
