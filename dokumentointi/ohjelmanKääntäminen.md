@@ -11,29 +11,29 @@ OpenJDK 8 Ubuntun käyttöön.
 
 1. Avaa terminaali ikkuna joko valikosta tai painamalla Ctrl-Alt-T.
 2. Lisää PPA paketinhallintajärjestelmän käytöön seuraavalla komennolla:
-```
-sudo add-apt-repository ppa:openjdk-r/ppa
-```
+ ```
+ sudo add-apt-repository ppa:openjdk-r/ppa
+ ```
 3. Päivitä paketinhallintajärjestelmän välimuisti:
-```
-sudo apt-get update
-```
+ ```
+ sudo apt-get update
+ ```
 4. Asenna OpenJDK 8
-```
-sudo apt-get install openjdk-8-jdk
-```
+ ```
+ sudo apt-get install openjdk-8-jdk
+ ```
 5. Jos käytössäsi on useita Javan versioita aseta haluamasi seuraavilla komennoilla:
-```
-sudo update-alternatives --config java
-```
+ ```
+ sudo update-alternatives --config java
+ ```
 ja oletus Java kääntäjä:
-```
-sudo update-alternatives --config javac
-```
+ ```
+ sudo update-alternatives --config javac
+ ```
 6. Tarkista että muutokset tulivat voimaan
-```
-java -version
-```
+ ```
+ java -version
+ ```
 
 Tuloksen pitäisi olla tämän tyylinen:
 ```
