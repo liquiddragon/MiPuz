@@ -25,8 +25,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
                 <version>3.2</version>
             </plugin>
@@ -34,6 +34,14 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.1.4</version>
+                <configuration>
+                    <targetClasses>
+                        <param>framework.mipuz.logic.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>framework.mipuz.logic.*</param>
+                    </targetTests>
+                </configuration>
             </plugin>
         </plugins>
     </build>
