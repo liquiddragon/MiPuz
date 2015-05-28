@@ -1,5 +1,6 @@
 package framework.mipuz.logic;
 
+import framework.mipuz.game.Game;
 import framework.mipuz.game.GameInfo;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -11,6 +12,7 @@ import static org.junit.Assert.*;
  */
 public class GamesTest {
 
+    private GTest game;
     private Games games;
 
     /**
@@ -33,15 +35,17 @@ public class GamesTest {
     }
 
     /**
-     * Test adding game info object to list.
+     * Test adding game object to list.
      */
     @Test
     public void addGameTest() {
+        game = new GTest();
+        game.setGameInfo(new GameInfo("Test 1", "Test 1", null));
+        
         games = new Games();
+        games.addGame(game);
 
-        games.addGame(new GameInfo("Test 1", "Test 1", null));
-
-        List<GameInfo> lgi = games.listGames();
+        List<GameInfo> lgi = games.listGameInfos();
 
         checkListGamesResult(1);
     }
@@ -53,10 +57,12 @@ public class GamesTest {
     public void addGameTestAfterwards() {
         games = addGamesToList(new GameInfo("Test 1", "Test 1", null));
 
-        List<GameInfo> lgi = games.listGames();
+        List<GameInfo> lgi = games.listGameInfos();
         checkListGamesResult(1);
 
-        games.addGame(new GameInfo("Test 2", "Test 2", null));
+        game = new GTest();
+        game.setGameInfo(new GameInfo("Test 2", "Test 2", null));
+        games.addGame(game);
         checkListGamesResult(2);
     }
 
@@ -121,7 +127,7 @@ public class GamesTest {
         assertEquals(nrOfEntries, games.numberOfEntries());
 
         int i = 1;
-        for (GameInfo gi : games.listGames()) {
+        for (GameInfo gi : games.listGameInfos()) {
             assertEquals("Test " + i, gi.getShortName());
             assertEquals("Test " + i, gi.getDescription());
             assertNull(gi.getIcon());
@@ -137,9 +143,60 @@ public class GamesTest {
      */
     private Games addGamesToList(GameInfo... gi) {
         Games gamesTest = new Games();
+        
         for (GameInfo gie : gi) {
-            gamesTest.addGame(gie);
+            game = new GTest();
+            game.setGameInfo(gie);
+            gamesTest.addGame(game);
         }
         return gamesTest;
+    }
+
+    /**
+     * This is private helper class for testing purposes.
+     */
+    private class GTest implements Game {
+
+        private GameInfo gi;
+        public boolean initCalled;
+        public boolean runGameCalled;
+        public boolean cleanUpGameCalled;
+        public boolean initIsSuccesful;
+
+        public GTest() {
+            initCalled = false;
+            runGameCalled = false;
+            cleanUpGameCalled = false;
+            initIsSuccesful = true;
+        }
+
+        public void setGameInfo(GameInfo gif) {
+            gi = gif;
+        }
+
+        public GameInfo getGameInfo() {
+            return gi;
+        }
+
+        @Override
+        public GameInfo retrieveGameInfo() {
+            return gi;
+        }
+
+        @Override
+        public boolean initGame() {
+            initCalled = true;
+            return initIsSuccesful;
+        }
+
+        @Override
+        public void runGame() {
+            runGameCalled = true;
+        }
+
+        @Override
+        public void cleanUpGame() {
+            cleanUpGameCalled = true;
+        }
     }
 }

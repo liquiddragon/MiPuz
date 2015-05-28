@@ -1,6 +1,8 @@
 package framework.mipuz.logic;
 
 import bbgame.BBGame;
+import framework.mipuz.game.Game;
+import framework.mipuz.game.GameInfo;
 import java.util.Iterator;
 
 /**
@@ -19,9 +21,13 @@ public class Engine {
 
     /**
      * This method creates and add games into game manager.
+     *
+     * The game classes are actually created by this method and stored in a
+     * list. This means that most of normal constructor operations should be
+     * placed in initGame method.
      */
     private void loadGames() {
-        this.games.addGame(new BBGame().retrieveGameInfo());
+        this.games.addGame(new BBGame());
     }
 
     /**
@@ -39,7 +45,23 @@ public class Engine {
      *
      * @return Iterator to game list
      */
-    public Iterator listGames() {
-        return this.games.listGames().iterator();
+    public Iterator listGameInfos() {
+        return this.games.listGameInfos().iterator();
+    }
+
+    /**
+     * This method handles running of selected game.
+     *
+     * @param gi GameInfo object of requested game to be played
+     */
+    public void playGame(GameInfo gi) {
+        Game game = this.games.retrieveGame(gi);
+
+        if (game != null) {
+            if (game.initGame() == true) {
+                game.runGame();
+            }
+            game.cleanUpGame();
+        }
     }
 }

@@ -1,10 +1,14 @@
 package framework.mipuz.logic;
 
+import framework.mipuz.game.Game;
 import framework.mipuz.game.GameInfo;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 /**
  * Engine class tests.
@@ -12,6 +16,12 @@ import static org.junit.Assert.*;
 public class EngineTest {
 
     private Engine engine;
+    private List<GTest> gtestObjects;
+
+    @Before
+    public void setUp() {
+        gtestObjects = new ArrayList<>();
+    }
 
     /**
      * Test that new class instantiation creates class variables.
@@ -25,6 +35,7 @@ public class EngineTest {
             try {
                 gamesField.setAccessible(true);
                 assertNotNull(gamesField.get(engine));
+                assertEquals(1, engine.numberOfGames());
             } catch (IllegalArgumentException e) {
                 System.out.println("Illegal argument: " + e.toString());
             } catch (SecurityException | IllegalAccessException e) {
@@ -132,6 +143,40 @@ public class EngineTest {
     }
 
     /**
+     * Test that playGame method works as expected.
+     */
+    @Test
+    public void playGameTest() {
+        engine = new Engine();
+
+        Games gamesTest = addGamesToList(new GameInfo("Test 1", "Test 1", null));
+        Field gamesField = obtainEngineClassPrivateField("games");
+        if (gamesField != null) {
+            try {
+                gamesField.setAccessible(true);
+                gamesField.set(engine, gamesTest);
+                assertNotNull(gamesField.get(engine));
+                assertEquals(1, engine.numberOfGames());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Illegal argument: " + e.toString());
+            } catch (SecurityException | IllegalAccessException e) {
+                System.out.println(e.toString());
+            }
+        }
+
+        Iterator itr = engine.listGameInfos();
+        assertNotNull(itr);
+        GameInfo gi = (GameInfo) itr.next();
+        assertNotNull(gi);
+        engine.playGame(gi);
+
+        GTest gtestGame = gtestObjects.get(0);
+        assertTrue(gtestGame.initCalled);
+        assertTrue(gtestGame.runGameCalled);
+        assertTrue(gtestGame.cleanUpGameCalled);
+    }
+
+    /**
      * Helper method to obtaining access to private field in Engine class for
      * testing purposes.
      *
@@ -162,7 +207,11 @@ public class EngineTest {
     private Games addGamesToList(GameInfo... gi) {
         Games gamesTest = new Games();
         for (GameInfo gie : gi) {
-            gamesTest.addGame(gie);
+            GTest game = new GTest();
+            game.setGameInfo(gie);
+            gamesTest.addGame(game);
+
+            gtestObjects.add(game);
         }
         return gamesTest;
     }
@@ -174,7 +223,7 @@ public class EngineTest {
      */
     private void checkIteratorResult(GameInfo... gameInfo) {
         int found = 0;
-        Iterator itr = engine.listGames();
+        Iterator itr = engine.listGameInfos();
 
         while (itr.hasNext()) {
             GameInfo gi = (GameInfo) itr.next();
@@ -187,5 +236,53 @@ public class EngineTest {
         }
 
         assertEquals(gameInfo.length, found);
+    }
+
+    /**
+     * This is private helper class for testing purposes.
+     */
+    private class GTest implements Game {
+
+        private GameInfo gi;
+        public boolean initCalled;
+        public boolean runGameCalled;
+        public boolean cleanUpGameCalled;
+        public boolean initIsSuccesful;
+
+        public GTest() {
+            initCalled = false;
+            runGameCalled = false;
+            cleanUpGameCalled = false;
+            initIsSuccesful = true;
+        }
+
+        public void setGameInfo(GameInfo gif) {
+            gi = gif;
+        }
+
+        public GameInfo getGameInfo() {
+            return gi;
+        }
+
+        @Override
+        public GameInfo retrieveGameInfo() {
+            return gi;
+        }
+
+        @Override
+        public boolean initGame() {
+            initCalled = true;
+            return initIsSuccesful;
+        }
+
+        @Override
+        public void runGame() {
+            runGameCalled = true;
+        }
+
+        @Override
+        public void cleanUpGame() {
+            cleanUpGameCalled = true;
+        }
     }
 }

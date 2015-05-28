@@ -1,8 +1,11 @@
 package framework.mipuz.logic;
 
+import framework.mipuz.game.Game;
 import java.util.ArrayList;
 import java.util.List;
 import framework.mipuz.game.GameInfo;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class manages games implementing Game interface.
@@ -10,19 +13,22 @@ import framework.mipuz.game.GameInfo;
  */
 public class Games {
 
-    private final List<GameInfo> games;
+    private final List<GameInfo> gamesInfo;
+    private final Map<Integer, Game> games;
 
     public Games() {
-        this.games = new ArrayList<>();
+        this.gamesInfo = new ArrayList<>();
+        this.games = new HashMap<>();
     }
 
     /**
      * Adds new game into manager.
      *
-     * @param gi game to be added
+     * @param game to be added
      */
-    public void addGame(GameInfo gi) {
-        this.games.add(gi);
+    public void addGame(Game game) {
+        this.gamesInfo.add(game.retrieveGameInfo());
+        this.games.put(obtainStorageKey(game.retrieveGameInfo()), game);
     }
 
     /**
@@ -30,8 +36,8 @@ public class Games {
      *
      * @return list of all games
      */
-    public List<GameInfo> listGames() {
-        return this.games;
+    public List<GameInfo> listGameInfos() {
+        return this.gamesInfo;
     }
 
     /**
@@ -40,6 +46,32 @@ public class Games {
      * @return number of game entries
      */
     public int numberOfEntries() {
-        return this.games.size();
+        return this.gamesInfo.size();
+    }
+
+    /**
+     * This method retrieves requested game object.
+     * 
+     * @param gi GameInfo for requested game
+     * @return Game if it was found, otherwise null
+     */
+    public Game retrieveGame(GameInfo gi) {
+        Game game = null;
+        if (games.containsKey(obtainStorageKey(gi))) {
+            game = games.get(obtainStorageKey(gi));
+        }
+
+        return game;
+    }
+
+    /**
+     * Obtain unique ID for game. Presently this is done by obtaining hash code
+     * of game short name.
+     *
+     * @param gi GameInfo object of the game
+     * @return unique ID for GameInfo object
+     */
+    private int obtainStorageKey(GameInfo gi) {
+        return gi.getShortName().hashCode();
     }
 }

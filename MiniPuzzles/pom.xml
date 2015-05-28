@@ -37,9 +37,11 @@
                 <configuration>
                     <targetClasses>
                         <param>framework.mipuz.logic.*</param>
+                        <param>bbgame.BBEngine</param>
                     </targetClasses>
                     <targetTests>
                         <param>framework.mipuz.logic.*</param>
+                        <param>bbgame.*</param>
                     </targetTests>
                 </configuration>
             </plugin>
