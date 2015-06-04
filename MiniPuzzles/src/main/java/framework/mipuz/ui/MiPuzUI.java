@@ -1,6 +1,8 @@
 package framework.mipuz.ui;
 
+import framework.mipuz.game.GameEnd;
 import framework.mipuz.game.GameInfo;
+import framework.mipuz.game.GameParameters;
 import framework.mipuz.logic.Engine;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -21,16 +22,26 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
-public class MiPuzUI implements Runnable, ActionListener {
+public class MiPuzUI implements Runnable, ActionListener, GameEnd {
 
+    private final String cmdPlayGame = "Play game";
+    private final String gameTitle = "MiniPuzzles";
     private JFrame mainFrame;
     private final Engine engine;
-    private JList gamesList;
+    private JList<?> gamesList;
+    private JPanel gameDisplay;
+    private JPanel gameMenu;
 
+    /**
+     * This is game framework default constructor.
+     */
     public MiPuzUI() {
-        this.engine = new Engine();
+        engine = new Engine();
     }
 
+    /**
+     * This method gets framework running.
+     */
     @Override
     public void run() {
         creatMainWindow();
@@ -42,9 +53,9 @@ public class MiPuzUI implements Runnable, ActionListener {
     private void creatMainWindow() {
 
         // Create main window frame
-        this.mainFrame = new JFrame("MiniPuzzles");
-        this.mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.mainFrame.setSize(getInitialSize());
+        mainFrame = new JFrame(gameTitle);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setSize(getInitialSize());
 
         // Create main window panel that contains menu and game area
         JPanel pane = new JPanel();
@@ -53,10 +64,8 @@ public class MiPuzUI implements Runnable, ActionListener {
         createMenu(pane);
         createMainPanel(pane);
 
-        this.mainFrame.getContentPane().add(pane);
-        // Commented out for now for development purposes.
-        //this.mainFrame.pack();
-        this.mainFrame.setVisible(true);
+        mainFrame.getContentPane().add(pane);
+        mainFrame.setVisible(true);
     }
 
     /**
@@ -66,21 +75,21 @@ public class MiPuzUI implements Runnable, ActionListener {
      */
     private void createMenu(JPanel pane) {
         // Create menu panel
-        JPanel menu = new JPanel();
-        menu.setLayout(new BorderLayout());
+        gameMenu = new JPanel();
+        gameMenu.setLayout(new BorderLayout());
 
         // Game info list construction
         JScrollPane listScroller = createGameInfoList();
-        menu.add(listScroller, BorderLayout.CENTER);
+        gameMenu.add(listScroller, BorderLayout.CENTER);
 
         // Play game button construction
-        JButton playGame = new JButton("Play game");
+        JButton playGame = new JButton(cmdPlayGame);
         playGame.addActionListener(this);
-        menu.add(playGame, BorderLayout.PAGE_END);
+        gameMenu.add(playGame, BorderLayout.PAGE_END);
 
         // Add menu panel to main window panel
         // TO DO: Replace hard coded values with constants
-        pane.add(menu, new GBC(0, 0).setAnchor(GBC.FIRST_LINE_END).setFill(GBC.BOTH).setWeight(0.1, 1.0));
+        pane.add(gameMenu, new GBC(0, 0).setAnchor(GBC.LAST_LINE_START).setFill(GBC.BOTH).setWeight(0.1, 1.0));
     }
 
     /**
@@ -89,32 +98,14 @@ public class MiPuzUI implements Runnable, ActionListener {
      * @return JScrollPane contained JList of available games
      */
     private JScrollPane createGameInfoList() {
-        DefaultListModel listModel = createGameInfoListModel();
-
-        gamesList = new JList(listModel);
+        List<GameInfo> gis = createGameInfoArray();
+        gamesList = new JList<>(gis.toArray());
         gamesList.setCellRenderer(new JLabelCellRenderer());
         gamesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         gamesList.setVisibleRowCount(4);
         JScrollPane listScroller = new JScrollPane(gamesList);
 
         return listScroller;
-    }
-
-    /**
-     * This method creates list model from available games to be included to
-     * JList.
-     *
-     * @return ListModel containing available games
-     */
-    private DefaultListModel createGameInfoListModel() {
-        List<GameInfo> gis = createGameInfoArray();
-
-        DefaultListModel listModel = new DefaultListModel();
-        for (GameInfo gi : gis) {
-            listModel.addElement(gi);
-        }
-
-        return listModel;
     }
 
     /**
@@ -125,7 +116,7 @@ public class MiPuzUI implements Runnable, ActionListener {
     private List<GameInfo> createGameInfoArray() {
         List<GameInfo> gis = new ArrayList<>();
 
-        Iterator gamesItr = this.engine.listGameInfos();
+        Iterator gamesItr = engine.listGameInfos();
         while (gamesItr.hasNext()) {
             GameInfo gi = (GameInfo) gamesItr.next();
             gis.add(gi);
@@ -140,7 +131,7 @@ public class MiPuzUI implements Runnable, ActionListener {
      */
     private void createMainPanel(JPanel pane) {
         // Create main panel
-        JPanel gameDisplay = new JPanel();
+        gameDisplay = new JPanel();
 
         // Add main panel to main window panel
         // TO DO: Replace hard coded values with constants
@@ -156,7 +147,8 @@ public class MiPuzUI implements Runnable, ActionListener {
         Toolkit kit = Toolkit.getDefaultToolkit();
 
         Dimension frameSize = new Dimension();
-        frameSize.setSize(kit.getScreenSize().getWidth() / 2, kit.getScreenSize().getHeight() / 2);
+        frameSize.setSize(kit.getScreenSize().getWidth() * 0.75,
+                kit.getScreenSize().getHeight() / 2);
 
         return frameSize;
     }
@@ -169,13 +161,26 @@ public class MiPuzUI implements Runnable, ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getActionCommand().equals("Play game")) {
+        if (ae.getActionCommand().equals(cmdPlayGame)) {
             if (gamesList.getSelectedIndex() >= 0) {
-                // Display selected item provided that Play game button was
-                // pressed and something was selected from the list
+                gameMenu.setVisible(false);
+
+                GameParameters gparams = new GameParameters();
+                gparams.setGameDisplay(gameDisplay);
+                gparams.setGameEnd(this);
                 GameInfo gi = (GameInfo) gamesList.getModel().getElementAt(gamesList.getSelectedIndex());
-                JOptionPane.showMessageDialog(mainFrame, "Selected: " + gi.getShortName(), "MiPuz", JOptionPane.INFORMATION_MESSAGE);
+                engine.playGame(gi, gparams);
             }
         }
+    }
+
+    /**
+     * This method returns control to main framework.
+     */
+    @Override
+    public void finished() {
+        // Functionality test display during development
+        //JOptionPane.showMessageDialog(mainFrame, "Game over!", "MiPuz", JOptionPane.INFORMATION_MESSAGE);
+        gameMenu.setVisible(true);
     }
 }

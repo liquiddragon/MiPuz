@@ -41,3 +41,20 @@ BBGame luokan rakentamista ja BBEngine luokan suunnittelua, 2.5t
 28.5
 BBEngine luokan testaamista ja korjaamista, 3t
 
+30.5
+BBGame valinta käyttöliittymän suunnittelua ja toteutusta, 4t
+
+31.5
+BBGame peli käyttöliittymän suunnittelua ja toteutusta, 4t
+
+1.6
+BBGame luokkien refraktorointia ja käyttöliittymien muokkausta, 4t
+
+2.6
+BBGame toiminnallisuuden testausta ja korjausta, 2.5t
+
+4.6
+MiPuz framework toiminnalisuuden viilausta ja testien päivitystä, 2t
+BBGame komponenttien testausta ja toiminnallisuuden korjausta testien johdosta, 4t
+Dokumentaation päivitystä ja tekoa, 1.5t
+

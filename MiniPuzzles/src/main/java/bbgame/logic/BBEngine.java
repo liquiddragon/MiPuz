@@ -1,9 +1,9 @@
-package bbgame;
+package bbgame.logic;
 
 import java.util.Random;
 
 /**
- * This class is BBGame engine containing game logic.
+ * This class contains BBGame logic.
  *
  */
 public class BBEngine {
@@ -14,11 +14,11 @@ public class BBEngine {
     private long valueToBeGuessed;
 
     /**
-     * Game level used for this game and its value limits.
+     * Game levels used for this game and related value limits.
      */
     public enum GameLevel {
 
-        EASY(256), MEDIUM(65536), HARD(2147483648L);
+        EASY(256), MEDIUM(65536), HARD(4294967296L);
         private final long upperLimit;
 
         private GameLevel(long limit) {
@@ -31,17 +31,20 @@ public class BBEngine {
     };
 
     /**
-     * Result of check performed on provided guess.
+     * Results of check performed on provided guess.
      */
     public enum CheckResult {
 
         CORRECT, INCORRECT, INVALID_INPUT
     }
 
+    /**
+     * This is BBEngine default constructor.
+     */
     public BBEngine() {
-        this.randomizer = new Random();
-        this.gameLevel = GameLevel.EASY;
-        this.valueToBeGuessed = VALUE_NOT_INITIALIZED;
+        randomizer = new Random();
+        gameLevel = GameLevel.EASY;
+        valueToBeGuessed = VALUE_NOT_INITIALIZED;
     }
 
     /**
@@ -69,22 +72,21 @@ public class BBEngine {
      */
     public long obtainNewGuess() {
         setUpGuess();
-        return this.valueToBeGuessed;
+        return valueToBeGuessed;
     }
 
     /**
-     * This method provides previously obtained value anew.
+     * This method provides previously generated value.
      *
      * @return previously generated guess value
      */
     public long obtainLastGuess() {
-        return this.valueToBeGuessed;
+        return valueToBeGuessed;
     }
 
     /**
-     * This method validates guess against generated random value. If
-     * obtainNewGuess method has not been called this method returns
-     * INVALID_INPUT as a result.
+     * This method validates guess against generated value. If obtainNewGuess
+     * method has not been called this method returns INVALID_INPUT as a result.
      *
      * @param guess to be validated
      * @return result of validation
@@ -92,14 +94,14 @@ public class BBEngine {
     public CheckResult checkGuess(String guess) {
         CheckResult result;
 
-        if (this.valueToBeGuessed == VALUE_NOT_INITIALIZED) {
+        if (valueToBeGuessed == VALUE_NOT_INITIALIZED) {
             result = CheckResult.INVALID_INPUT;
         } else {
             try {
                 long guessNr;
                 guessNr = Integer.parseInt(guess, 2);
 
-                if (guessNr == this.valueToBeGuessed) {
+                if (guessNr == valueToBeGuessed) {
                     result = CheckResult.CORRECT;
                 } else {
                     result = CheckResult.INCORRECT;
@@ -116,9 +118,9 @@ public class BBEngine {
      */
     private void setUpGuess() {
         long scaler = 0;
-        this.valueToBeGuessed = Math.abs(this.randomizer.nextLong());
+        valueToBeGuessed = Math.abs(randomizer.nextLong());
 
-        switch (this.gameLevel) {
+        switch (gameLevel) {
             case EASY:
                 scaler = BBEngine.GameLevel.EASY.getLimit();
                 break;
@@ -131,6 +133,6 @@ public class BBEngine {
                 scaler = BBEngine.GameLevel.HARD.getLimit();
                 break;
         }
-        this.valueToBeGuessed %= scaler;
+        valueToBeGuessed %= scaler;
     }
 }

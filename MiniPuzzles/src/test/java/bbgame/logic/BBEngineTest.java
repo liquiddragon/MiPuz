@@ -1,4 +1,4 @@
-package bbgame;
+package bbgame.logic;
 
 import java.lang.reflect.Field;
 import org.junit.Test;
@@ -163,6 +163,11 @@ public class BBEngineTest {
                 bbengine.checkGuess("1"));
     }
 
+    @Test
+    public void getLimitTest() {
+        assertEquals(256, BBEngine.GameLevel.EASY.getLimit());
+    }
+    
     /**
      * Helper method to obtaining access to private field in BBEngine class for
      * testing purposes.
@@ -185,5 +190,4 @@ public class BBEngineTest {
 
         return field;
     }
-
 }

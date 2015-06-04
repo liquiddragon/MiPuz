@@ -16,9 +16,12 @@ public class Games {
     private final List<GameInfo> gamesInfo;
     private final Map<Integer, Game> games;
 
+    /**
+     * This is framework game default constructor.
+     */
     public Games() {
-        this.gamesInfo = new ArrayList<>();
-        this.games = new HashMap<>();
+        gamesInfo = new ArrayList<>();
+        games = new HashMap<>();
     }
 
     /**
@@ -27,8 +30,8 @@ public class Games {
      * @param game to be added
      */
     public void addGame(Game game) {
-        this.gamesInfo.add(game.retrieveGameInfo());
-        this.games.put(obtainStorageKey(game.retrieveGameInfo()), game);
+        gamesInfo.add(game.retrieveGameInfo());
+        games.put(obtainStorageKey(game.retrieveGameInfo()), game);
     }
 
     /**
@@ -37,7 +40,7 @@ public class Games {
      * @return list of all games
      */
     public List<GameInfo> listGameInfos() {
-        return this.gamesInfo;
+        return gamesInfo;
     }
 
     /**
@@ -46,12 +49,12 @@ public class Games {
      * @return number of game entries
      */
     public int numberOfEntries() {
-        return this.gamesInfo.size();
+        return gamesInfo.size();
     }
 
     /**
      * This method retrieves requested game object.
-     * 
+     *
      * @param gi GameInfo for requested game
      * @return Game if it was found, otherwise null
      */

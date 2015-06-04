@@ -2,6 +2,7 @@ package framework.mipuz.logic;
 
 import framework.mipuz.game.Game;
 import framework.mipuz.game.GameInfo;
+import framework.mipuz.game.GameParameters;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -168,7 +169,7 @@ public class EngineTest {
         assertNotNull(itr);
         GameInfo gi = (GameInfo) itr.next();
         assertNotNull(gi);
-        engine.playGame(gi);
+        engine.playGame(gi, null);
 
         GTest gtestGame = gtestObjects.get(0);
         assertTrue(gtestGame.initCalled);
@@ -270,7 +271,7 @@ public class EngineTest {
         }
 
         @Override
-        public boolean initGame() {
+        public boolean initGame(GameParameters gameParams) {
             initCalled = true;
             return initIsSuccesful;
         }

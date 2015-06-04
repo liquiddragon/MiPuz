@@ -3,6 +3,7 @@ package framework.mipuz.logic;
 import bbgame.BBGame;
 import framework.mipuz.game.Game;
 import framework.mipuz.game.GameInfo;
+import framework.mipuz.game.GameParameters;
 import java.util.Iterator;
 
 /**
@@ -13,8 +14,11 @@ public class Engine {
 
     private final Games games;
 
+    /**
+     * This is framework engine default constructor.
+     */
     public Engine() {
-        this.games = new Games();
+        games = new Games();
 
         loadGames();
     }
@@ -27,7 +31,7 @@ public class Engine {
      * placed in initGame method.
      */
     private void loadGames() {
-        this.games.addGame(new BBGame());
+        games.addGame(new BBGame());
     }
 
     /**
@@ -36,7 +40,7 @@ public class Engine {
      * @return number of game available
      */
     public int numberOfGames() {
-        return this.games.numberOfEntries();
+        return games.numberOfEntries();
     }
 
     /**
@@ -46,19 +50,21 @@ public class Engine {
      * @return Iterator to game list
      */
     public Iterator listGameInfos() {
-        return this.games.listGameInfos().iterator();
+        return games.listGameInfos().iterator();
     }
 
     /**
      * This method handles running of selected game.
      *
      * @param gi GameInfo object of requested game to be played
+     * @param gameParams parameters for the game to use to function in given
+     * framework
      */
-    public void playGame(GameInfo gi) {
-        Game game = this.games.retrieveGame(gi);
+    public void playGame(GameInfo gi, GameParameters gameParams) {
+        Game game = games.retrieveGame(gi);
 
         if (game != null) {
-            if (game.initGame() == true) {
+            if (game.initGame(gameParams) == true) {
                 game.runGame();
             }
             game.cleanUpGame();

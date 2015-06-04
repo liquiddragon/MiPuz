@@ -13,10 +13,12 @@ public interface Game {
      * Game initialisation method that is called by framework to allow game to
      * make its initialisations required before the game is being run.
      *
+     * @param gameParams parameters for the game to use to function in given
+     * framework
      * @return value that indicates whether initialisation was successful or
      * not. If not then the game is not attempted to execute.
      */
-    public boolean initGame();
+    public boolean initGame(GameParameters gameParams);
 
     /**
      * The game execution method called by framework.

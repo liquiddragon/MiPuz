@@ -2,8 +2,10 @@ package framework.mipuz.logic;
 
 import framework.mipuz.game.Game;
 import framework.mipuz.game.GameInfo;
+import framework.mipuz.game.GameParameters;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -41,7 +43,7 @@ public class GamesTest {
     public void addGameTest() {
         game = new GTest();
         game.setGameInfo(new GameInfo("Test 1", "Test 1", null));
-        
+
         games = new Games();
         games.addGame(game);
 
@@ -99,6 +101,31 @@ public class GamesTest {
     }
 
     /**
+     * Test storage key generating method.
+     */
+    @Test
+    public void obtainStorageKeyTest() {
+        game = new GTest();
+        game.setGameInfo(new GameInfo("Test 1", "Test 1", null));
+
+        games = new Games();
+        games.addGame(game);
+
+        Field gamesField = obtainGamesClassPrivateField("games");
+
+        try {
+            gamesField.setAccessible(true);
+            Map<?, ?> gs = ((Map) gamesField.get(games));
+            assertNotNull(gs.get("Test 1".hashCode()));
+            assertEquals(1, gs.size());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Illegal argument: " + e.toString());
+        } catch (SecurityException | IllegalAccessException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    /**
      * Helper method to obtaining access to private field in Games class for
      * testing purposes.
      *
@@ -143,7 +170,7 @@ public class GamesTest {
      */
     private Games addGamesToList(GameInfo... gi) {
         Games gamesTest = new Games();
-        
+
         for (GameInfo gie : gi) {
             game = new GTest();
             game.setGameInfo(gie);
@@ -184,7 +211,7 @@ public class GamesTest {
         }
 
         @Override
-        public boolean initGame() {
+        public boolean initGame(GameParameters gameParams) {
             initCalled = true;
             return initIsSuccesful;
         }
