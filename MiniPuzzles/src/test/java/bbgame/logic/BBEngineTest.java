@@ -19,24 +19,10 @@ public class BBEngineTest {
         bbengine = new BBEngine();
 
         Field randomizerField = obtainBBEngineClassPrivateField("randomizer");
-        try {
-            randomizerField.setAccessible(true);
-            assertNotNull(randomizerField.get(bbengine));
-        } catch (IllegalArgumentException e) {
-            System.out.println("Illegal argument: " + e.toString());
-        } catch (SecurityException | IllegalAccessException e) {
-            System.out.println(e.toString());
-        }
+        testFieldForNotNull(randomizerField);
 
         Field gameLevelField = obtainBBEngineClassPrivateField("gameLevel");
-        try {
-            gameLevelField.setAccessible(true);
-            assertNotNull(gameLevelField.get(bbengine));
-        } catch (IllegalArgumentException e) {
-            System.out.println("Illegal argument: " + e.toString());
-        } catch (SecurityException | IllegalAccessException e) {
-            System.out.println(e.toString());
-        }
+        testFieldForNotNull(gameLevelField);
     }
 
     /**
@@ -71,6 +57,7 @@ public class BBEngineTest {
         long guessValue = bbengine.obtainNewGuess();
 
         assertTrue(0 <= guessValue && guessValue <= BBEngine.GameLevel.EASY.getLimit());
+        assertEquals(8, BBEngine.GameLevel.EASY.getBits());
     }
 
     /**
@@ -85,6 +72,7 @@ public class BBEngineTest {
         long guessValue = bbengine.obtainNewGuess();
 
         assertTrue(0 <= guessValue && guessValue <= BBEngine.GameLevel.MEDIUM.getLimit());
+        assertEquals(16, BBEngine.GameLevel.MEDIUM.getBits());
     }
 
     /**
@@ -98,6 +86,7 @@ public class BBEngineTest {
         long guessValue = bbengine.obtainNewGuess();
 
         assertTrue(0 <= guessValue && guessValue <= BBEngine.GameLevel.HARD.getLimit());
+        assertEquals(32, BBEngine.GameLevel.HARD.getBits());
     }
 
     /**
@@ -167,7 +156,7 @@ public class BBEngineTest {
     public void getLimitTest() {
         assertEquals(256, BBEngine.GameLevel.EASY.getLimit());
     }
-    
+
     /**
      * Helper method to obtaining access to private field in BBEngine class for
      * testing purposes.
@@ -189,5 +178,22 @@ public class BBEngineTest {
         }
 
         return field;
+    }
+
+    /**
+     * Helper method for testing if given private field is non-null on test
+     * created BBEngine instance.
+     *
+     * @param field reference to field being tested
+     */
+    private void testFieldForNotNull(Field field) {
+        try {
+            field.setAccessible(true);
+            assertNotNull(field.get(bbengine));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Illegal argument: " + e.toString());
+        } catch (SecurityException | IllegalAccessException e) {
+            System.out.println(e.toString());
+        }
     }
 }

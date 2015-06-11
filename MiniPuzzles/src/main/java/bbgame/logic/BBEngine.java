@@ -9,8 +9,9 @@ import java.util.Random;
 public class BBEngine {
 
     private final long VALUE_NOT_INITIALIZED = -1;
-    private GameLevel gameLevel;
     private final Random randomizer;
+    private final int RADIX_BASE_TWO = 2;
+    private GameLevel gameLevel;
     private long valueToBeGuessed;
 
     /**
@@ -18,15 +19,21 @@ public class BBEngine {
      */
     public enum GameLevel {
 
-        EASY(256), MEDIUM(65536), HARD(4294967296L);
+        EASY(256, 8), MEDIUM(65536, 16), HARD(4294967296L, 32);
         private final long upperLimit;
+        private final int nrOfBits;
 
-        private GameLevel(long limit) {
+        private GameLevel(long limit, int bits) {
             upperLimit = limit;
+            nrOfBits = bits;
         }
 
         public long getLimit() {
             return upperLimit;
+        }
+
+        public int getBits() {
+            return nrOfBits;
         }
     };
 
@@ -92,19 +99,16 @@ public class BBEngine {
      * @return result of validation
      */
     public CheckResult checkGuess(String guess) {
-        CheckResult result;
+        CheckResult result = CheckResult.INCORRECT;
 
         if (valueToBeGuessed == VALUE_NOT_INITIALIZED) {
             result = CheckResult.INVALID_INPUT;
         } else {
             try {
-                long guessNr;
-                guessNr = Integer.parseInt(guess, 2);
+                long guessNr = Integer.parseInt(guess, RADIX_BASE_TWO);
 
                 if (guessNr == valueToBeGuessed) {
                     result = CheckResult.CORRECT;
-                } else {
-                    result = CheckResult.INCORRECT;
                 }
             } catch (NumberFormatException e) {
                 result = CheckResult.INVALID_INPUT;

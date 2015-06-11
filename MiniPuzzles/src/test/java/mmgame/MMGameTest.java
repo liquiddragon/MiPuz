@@ -1,39 +1,42 @@
-package bbgame;
+package mmgame;
 
-import bbgame.event.BBStateEvent;
-import bbgame.event.BBStates;
-import bbgame.logic.BBEngine;
-import bbgame.ui.BBStartUI;
+import mmgame.event.MMStateEvent;
+import mmgame.event.MMStates;
+import mmgame.logic.MMEngine;
 import framework.mipuz.game.GameEnd;
 import framework.mipuz.game.GameInfo;
 import framework.mipuz.game.GameParameters;
 import java.lang.reflect.Field;
 import javax.swing.JPanel;
+import mmgame.ui.MMStartUI;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests for BBGame class.
+ * Tests for MMGame class.
  */
-public class BBGameTest {
+public class MMGameTest {
 
-    private BBGame bbGame;
+    private MMGame mmGame;
+
+    public MMGameTest() {
+    }
 
     /**
      * Test that new class instantiation creates class variables.
      */
     @Test
     public void classInstantiationTest() {
-        bbGame = new BBGame();
+        mmGame = new MMGame();
 
-        Field giField = obtainBBGameClassPrivateField("gi");
-        Field giconField = obtainBBGameClassPrivateField("gicon");
+        Field giField = obtainMMGameClassPrivateField("gi");
+        Field giconField = obtainMMGameClassPrivateField("gicon");
 
         try {
             giField.setAccessible(true);
             giconField.setAccessible(true);
-            assertNotNull(giField.get(bbGame));
-            assertNotNull(giconField.get(bbGame));
+            assertNotNull(giField.get(mmGame));
+            assertNotNull(giconField.get(mmGame));
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
@@ -46,15 +49,15 @@ public class BBGameTest {
      */
     @Test
     public void retrieveGameInfoTest() {
-        bbGame = new BBGame();
+        mmGame = new MMGame();
 
-        GameInfo gi = bbGame.retrieveGameInfo();
+        GameInfo gi = mmGame.retrieveGameInfo();
         assertNotNull(gi);
 
-        Field giField = obtainBBGameClassPrivateField("gi");
+        Field giField = obtainMMGameClassPrivateField("gi");
         try {
             giField.setAccessible(true);
-            GameInfo privateGI = (GameInfo) giField.get(bbGame);
+            GameInfo privateGI = (GameInfo) giField.get(mmGame);
             assertEquals(privateGI.getShortName(), gi.getShortName());
             assertEquals(privateGI.getDescription(), gi.getDescription());
         } catch (IllegalArgumentException e) {
@@ -69,25 +72,25 @@ public class BBGameTest {
      */
     @Test
     public void initGameTest() {
-        bbGame = new BBGame();
+        mmGame = new MMGame();
 
         GameParameters gparams = new GameParameters();
         gparams.setGameDisplay(new JPanel());
         gparams.setGameEnd(null);
-        Boolean status = bbGame.initGame(gparams);
+        Boolean status = mmGame.initGame(gparams);
 
         assertTrue(status);
 
-        Field engineField = obtainBBGameClassPrivateField("engine");
-        Field bbStartUIField = obtainBBGameClassPrivateField("bbStartUI");
-        Field gameParamsField = obtainBBGameClassPrivateField("gameParams");
+        Field engineField = obtainMMGameClassPrivateField("engine");
+        Field mmStartUIField = obtainMMGameClassPrivateField("mmStartUI");
+        Field gameParamsField = obtainMMGameClassPrivateField("gameParams");
         try {
             engineField.setAccessible(true);
-            bbStartUIField.setAccessible(true);
+            mmStartUIField.setAccessible(true);
             gameParamsField.setAccessible(true);
-            assertNotNull(engineField.get(bbGame));
-            assertNotNull(bbStartUIField.get(bbGame));
-            assertNotNull(gameParamsField.get(bbGame));
+            assertNotNull(engineField.get(mmGame));
+            assertNotNull(mmStartUIField.get(mmGame));
+            assertNotNull(gameParamsField.get(mmGame));
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
@@ -100,28 +103,28 @@ public class BBGameTest {
      */
     @Test
     public void runGameTest() {
-        bbGame = new BBGame();
+        mmGame = new MMGame();
 
         GameParameters gparams = new GameParameters();
         gparams.setGameDisplay(new JPanel());
         gparams.setGameEnd(null);
 
-        assertTrue(bbGame.initGame(gparams));
+        assertTrue(mmGame.initGame(gparams));
 
-        Field bbStartUIField = obtainBBGameClassPrivateField("bbStartUI");
+        Field mmStartUIField = obtainMMGameClassPrivateField("mmStartUI");
         JPanel testPanel = new JPanel();
-        BBStartUI gtest = new BBStartUI(testPanel, null);
+        MMStartUI gtest = new MMStartUI(testPanel, null);
 
         try {
-            bbStartUIField.setAccessible(true);
-            bbStartUIField.set(bbGame, gtest);
+            mmStartUIField.setAccessible(true);
+            mmStartUIField.set(mmGame, gtest);
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
             System.out.println(e.toString());
         }
 
-        bbGame.runGame();
+        mmGame.runGame();
 
         assertEquals(3, testPanel.getComponentCount());
     }
@@ -131,42 +134,42 @@ public class BBGameTest {
      */
     @Test
     public void cleanUpGameTest() {
-        bbGame = new BBGame();
+        mmGame = new MMGame();
 
-        bbGame.cleanUpGame();
+        mmGame.cleanUpGame();
     }
 
     /**
      * Test event handler return to menu.
      */
     @Test
-    public void bbStateReceivedReturnToMenuTest() {
-        bbGame = new BBGame();
+    public void mmStateReceivedReturnToMenuTest() {
+        mmGame = new MMGame();
 
         GTest test = new GTest();
         GameParameters gparams = new GameParameters();
         gparams.setGameDisplay(new JPanel());
         gparams.setGameEnd(test);
 
-        assertTrue(bbGame.initGame(gparams));
+        assertTrue(mmGame.initGame(gparams));
 
-        Field bbStartUIField = obtainBBGameClassPrivateField("bbStartUI");
+        Field mmStartUIField = obtainMMGameClassPrivateField("mmStartUI");
         JPanel testPanel = new JPanel();
-        BBStartUI gtest = new BBStartUI(testPanel, null);
+        MMStartUI gtest = new MMStartUI(testPanel, null);
 
         try {
-            bbStartUIField.setAccessible(true);
-            bbStartUIField.set(bbGame, gtest);
+            mmStartUIField.setAccessible(true);
+            mmStartUIField.set(mmGame, gtest);
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
             System.out.println(e.toString());
         }
 
-        bbGame.runGame();
+        mmGame.runGame();
 
-        BBStateEvent bbevent = new BBStateEvent(this, BBStates.State.RETURN_TO_MENU);
-        bbGame.bbStateReceived(bbevent);
+        MMStateEvent mmevent = new MMStateEvent(this, MMStates.State.RETURN_TO_MENU);
+        mmGame.mmStateReceived(mmevent);
         assertEquals(0, testPanel.getComponentCount());
         assertTrue(test.finishedCalled);
     }
@@ -175,41 +178,42 @@ public class BBGameTest {
      * Test event handler run.
      */
     @Test
-    public void bbStateReceivedRunTest() {
-        bbGame = new BBGame();
+    public void mmStateReceivedRunTest() {
+        mmGame = new MMGame();
 
         GTest test = new GTest();
         GameParameters gparams = new GameParameters();
         gparams.setGameDisplay(new JPanel());
         gparams.setGameEnd(test);
 
-        assertTrue(bbGame.initGame(gparams));
+        assertTrue(mmGame.initGame(gparams));
 
-        Field bbStartUIField = obtainBBGameClassPrivateField("bbStartUI");
+        Field mmStartUIField = obtainMMGameClassPrivateField("mmStartUI");
         JPanel testPanel = new JPanel();
-        BBStartUI gtest = new BBStartUI(testPanel, null);
+        MMStartUI gtest = new MMStartUI(testPanel, null);
 
         try {
-            bbStartUIField.setAccessible(true);
-            bbStartUIField.set(bbGame, gtest);
+            mmStartUIField.setAccessible(true);
+            mmStartUIField.set(mmGame, gtest);
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
             System.out.println(e.toString());
         }
 
-        bbGame.runGame();
+        mmGame.runGame();
 
-        BBStateEvent bbevent = new BBStateEvent(this, BBStates.State.RUN);
-        bbGame.bbStateReceived(bbevent);
-        assertEquals(0, testPanel.getComponentCount());
+        MMStateEvent mmevent = new MMStateEvent(this, MMStates.State.RUN);
+        mmGame.mmStateReceived(mmevent);
+        assertEquals(3, testPanel.getComponentCount());
 
-        Field engineField = obtainBBGameClassPrivateField("engine");
+        Field engineField = obtainMMGameClassPrivateField("engine");
         try {
             engineField.setAccessible(true);
-            BBEngine bbEngine = (BBEngine) engineField.get(bbGame);
-            assertEquals(BBEngine.GameLevel.EASY, bbEngine.getGameLevel());
-            assertNotEquals(BBEngine.CheckResult.INVALID_INPUT, bbEngine.obtainNewGuess());
+            MMEngine mmEngine = (MMEngine) engineField.get(mmGame);
+            assertEquals(MMEngine.GameLevel.EASY, mmEngine.getGameLevel());
+            assertEquals(1, MMEngine.GameLevel.EASY.getLevelValue());
+            //assertNotEquals(MMEngine.CheckResult.INVALID_INPUT, mmEngine.obtainNewGuess());
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
@@ -221,53 +225,50 @@ public class BBGameTest {
      * Test event handler game over.
      */
     @Test
-    public void bbStateReceivedGameOverTest() {
-        bbGame = new BBGame();
+    public void mmStateReceivedGameOverTest() {
+        mmGame = new MMGame();
 
         GTest test = new GTest();
         GameParameters gparams = new GameParameters();
         gparams.setGameDisplay(new JPanel());
         gparams.setGameEnd(test);
 
-        assertTrue(bbGame.initGame(gparams));
+        assertTrue(mmGame.initGame(gparams));
 
-        Field bbStartUIField = obtainBBGameClassPrivateField("bbStartUI");
+        Field mmStartUIField = obtainMMGameClassPrivateField("mmStartUI");
         JPanel testPanel = new JPanel();
-        BBStartUI gtest = new BBStartUI(testPanel, null);
+        MMStartUI gtest = new MMStartUI(testPanel, null);
 
         try {
-            bbStartUIField.setAccessible(true);
-            bbStartUIField.set(bbGame, gtest);
+            mmStartUIField.setAccessible(true);
+            mmStartUIField.set(mmGame, gtest);
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
             System.out.println(e.toString());
         }
 
-        bbGame.runGame();
+        mmGame.runGame();
 
-        BBStateEvent bbevent = new BBStateEvent(this, BBStates.State.RUN);
-        bbGame.bbStateReceived(bbevent);
-
-        bbevent = new BBStateEvent(this, BBStates.State.GAME_OVER);
-        bbGame.bbStateReceived(bbevent);
+        MMStateEvent mmevent = new MMStateEvent(this, MMStates.State.GAME_OVER);
+        //mmGame.mmStateReceived(mmevent);
         assertEquals(3, testPanel.getComponentCount());
     }
 
     /**
-     * Helper method to obtaining access to private field in BBGame class for
+     * Helper method to obtaining access to private field in MMGame class for
      * testing purposes.
      *
      * @param fieldName Name of field for which access is wanted
      * @return Reference to BGame class private field, if successful, or null,
      * if unsuccessful
      */
-    private Field obtainBBGameClassPrivateField(String fieldName) {
-        Class bbGameClass = BBGame.class;
+    private Field obtainMMGameClassPrivateField(String fieldName) {
+        Class mmGameClass = MMGame.class;
         Field field = null;
 
         try {
-            field = bbGameClass.getDeclaredField(fieldName);
+            field = mmGameClass.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
             System.out.println("Missing field: " + e.toString());
         } catch (SecurityException e) {

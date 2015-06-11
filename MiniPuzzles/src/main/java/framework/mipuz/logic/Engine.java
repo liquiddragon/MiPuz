@@ -5,6 +5,7 @@ import framework.mipuz.game.Game;
 import framework.mipuz.game.GameInfo;
 import framework.mipuz.game.GameParameters;
 import java.util.Iterator;
+import mmgame.MMGame;
 
 /**
  * This class handles framework central logic.
@@ -32,6 +33,7 @@ public class Engine {
      */
     private void loadGames() {
         games.addGame(new BBGame());
+        games.addGame(new MMGame());
     }
 
     /**

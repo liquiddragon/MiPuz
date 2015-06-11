@@ -1,4 +1,4 @@
-package framework.mipuz.ui;
+package framework.utilities;
 
 import java.awt.*;
 

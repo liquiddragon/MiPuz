@@ -58,3 +58,18 @@ MiPuz framework toiminnalisuuden viilausta ja testien päivitystä, 2t
 BBGame komponenttien testausta ja toiminnallisuuden korjausta testien johdosta, 4t
 Dokumentaation päivitystä ja tekoa, 1.5t
 
+6.6
+MMGamen suunnittelua, 2t
+
+7.6
+MMGame toiminnalisuuteen liittyvien asioiden selvittelyä, 3t
+
+8.6
+MMGame luokan toteutusta, 1.5t
+
+10.6
+MMGame luokkien toteutusta ja testausta, 5t
+
+11.6
+Refaktorointia ja dokumenttien päivitystä, 3t
+

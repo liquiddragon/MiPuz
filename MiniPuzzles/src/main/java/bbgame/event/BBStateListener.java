@@ -1,4 +1,4 @@
-package bbgame;
+package bbgame.event;
 
 /**
  * This is state interface for listeners interested in the BBGame states.

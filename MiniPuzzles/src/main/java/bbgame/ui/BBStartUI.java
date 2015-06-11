@@ -1,13 +1,15 @@
 package bbgame.ui;
 
 import bbgame.logic.BBEngine;
-import bbgame.BBStateEvent;
-import bbgame.BBStateListener;
-import bbgame.BBStates;
+import bbgame.event.BBStateEvent;
+import bbgame.event.BBStateListener;
+import bbgame.event.BBStates;
+import framework.utilities.RelativeLayout;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,9 +25,8 @@ public class BBStartUI implements ActionListener {
     private final String cmdMenu = "Menu";
     private final String promptSelectLevel = "Select level";
     private final JPanel gamePanel;
-    private BBEngine.GameLevel gameLevel;
-    private JPanel askGLUI;
     private final BBStateListener bbStateListener;
+    private BBEngine.GameLevel gameLevel;
 
     /**
      * This is BBStartUI default constructor.
@@ -34,7 +35,7 @@ public class BBStartUI implements ActionListener {
      * @param bbStateListener this GUI event listener
      */
     public BBStartUI(JPanel gameDisplay, BBStateListener bbStateListener) {
-        this.gamePanel = gameDisplay;
+        gamePanel = gameDisplay;
         this.bbStateListener = bbStateListener;
     }
 
@@ -42,20 +43,16 @@ public class BBStartUI implements ActionListener {
      * This method creates game starting GUI and sets it running.
      */
     public void askGameLevel() {
-        askGLUI = createAskGameLevelUI();
-
-        gamePanel.add(askGLUI);
-        gamePanel.revalidate();
-        gamePanel.repaint();
+        createAskGameLevelUI();
+        udpateMainGamePanel();
     }
 
     /**
      * This method removes game starting GUI from game panel.
      */
     public void removeStartUI() {
-        gamePanel.remove(askGLUI);
-        gamePanel.revalidate();
-        gamePanel.repaint();
+        gamePanel.removeAll();
+        udpateMainGamePanel();
     }
 
     /**
@@ -69,22 +66,34 @@ public class BBStartUI implements ActionListener {
 
     /**
      * This method constructs main starting game GUI.
-     *
-     * @return main panel containing the GUI
      */
-    private JPanel createAskGameLevelUI() {
-        JPanel askUI = new JPanel(new BorderLayout());
+    private void createAskGameLevelUI() {
+        gamePanel.setLayout(new BorderLayout());
 
-        JLabel title = new JLabel(promptSelectLevel);
-        askUI.add(title, BorderLayout.PAGE_START);
+        JPanel topPanel = createTopPanel();
+        gamePanel.add(topPanel, BorderLayout.PAGE_START);
 
         JPanel selectionUI = createLevelSelectionPanel();
-        askUI.add(selectionUI, BorderLayout.CENTER);
+        gamePanel.add(selectionUI, BorderLayout.CENTER);
 
         JPanel buttonPanel = createCmdButtons();
-        askUI.add(buttonPanel, BorderLayout.PAGE_END);
+        gamePanel.add(buttonPanel, BorderLayout.PAGE_END);
+    }
 
-        return askUI;
+    /**
+     * This method creates top panel for start GUI.
+     *
+     * @return JPanel containing top panel
+     */
+    private JPanel createTopPanel() {
+        JPanel topPanel = new JPanel(new RelativeLayout(RelativeLayout.X_AXIS));
+
+        topPanel.add(Box.createGlue(), new Float(1));
+        JLabel title = new JLabel(promptSelectLevel);
+        topPanel.add(title, (float) 0.2);
+        topPanel.add(Box.createGlue(), new Float(1));
+
+        return topPanel;
     }
 
     /**
@@ -95,17 +104,30 @@ public class BBStartUI implements ActionListener {
     private JPanel createCmdButtons() {
         JPanel buttonPanel = new JPanel();
 
-        JButton play = new JButton(cmdPlay);
-        play.setActionCommand(cmdPlay);
-        play.addActionListener(this);
+        JButton play = createCommandButton(cmdPlay, KeyEvent.VK_P);
         buttonPanel.add(play);
 
-        JButton menu = new JButton(cmdMenu);
-        menu.setActionCommand(cmdMenu);
-        menu.addActionListener(this);
+        JButton menu = createCommandButton(cmdMenu, KeyEvent.VK_E);
         buttonPanel.add(menu);
 
         return buttonPanel;
+    }
+
+    /**
+     * This is helper method for creating command buttons.
+     *
+     * @param command name of the command to display
+     * @param cmdKey shortcut key for the command
+     * @return JButton created command
+     */
+    private JButton createCommandButton(String command, int cmdKey) {
+        JButton cmdButton = new JButton(command);
+
+        cmdButton.setActionCommand(command);
+        cmdButton.setMnemonic(cmdKey);
+        cmdButton.addActionListener(this);
+
+        return cmdButton;
     }
 
     /**
@@ -120,17 +142,17 @@ public class BBStartUI implements ActionListener {
         JRadioButton easyGL = constructGameLevelRadioButton(
                 BBEngine.GameLevel.EASY.toString(), KeyEvent.VK_E, true);
         gameLevel = BBEngine.GameLevel.EASY;
+        glChoices.add(easyGL);
+        selectionUI.add(easyGL);
+
         JRadioButton mediumGL = constructGameLevelRadioButton(
                 BBEngine.GameLevel.MEDIUM.toString(), KeyEvent.VK_M, false);
+        glChoices.add(mediumGL);
+        selectionUI.add(mediumGL);
+
         JRadioButton hardGL = constructGameLevelRadioButton(
                 BBEngine.GameLevel.HARD.toString(), KeyEvent.VK_H, false);
-
-        glChoices.add(easyGL);
-        glChoices.add(mediumGL);
         glChoices.add(hardGL);
-
-        selectionUI.add(easyGL);
-        selectionUI.add(mediumGL);
         selectionUI.add(hardGL);
 
         return selectionUI;
@@ -144,7 +166,8 @@ public class BBStartUI implements ActionListener {
      * @param selected default state of JRadioButton
      * @return
      */
-    private JRadioButton constructGameLevelRadioButton(String name, int mnemonic, boolean selected) {
+    private JRadioButton constructGameLevelRadioButton(String name, int mnemonic,
+            boolean selected) {
         JRadioButton radioButton = new JRadioButton(name);
 
         radioButton.setMnemonic(mnemonic);
@@ -156,7 +179,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method handles staring game GUI actions.
+     * This method handles starting game GUI actions.
      *
      * @param event to be handled
      */
@@ -192,5 +215,13 @@ public class BBStartUI implements ActionListener {
     private void sendEvent(BBStates.State state) {
         BBStateEvent stateEvent = new BBStateEvent(this, state);
         bbStateListener.bbStateReceived(stateEvent);
+    }
+
+    /**
+     * This method request update to the main game panel.
+     */
+    private void udpateMainGamePanel() {
+        gamePanel.revalidate();
+        gamePanel.repaint();
     }
 }

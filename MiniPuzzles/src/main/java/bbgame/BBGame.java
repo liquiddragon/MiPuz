@@ -1,5 +1,7 @@
 package bbgame;
 
+import bbgame.event.BBStateEvent;
+import bbgame.event.BBStateListener;
 import bbgame.logic.BBEngine;
 import bbgame.ui.BBGameUI;
 import bbgame.ui.BBStartUI;
@@ -7,10 +9,9 @@ import framework.mipuz.game.Game;
 import framework.mipuz.game.GameInfo;
 import framework.mipuz.game.GameParameters;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
- * This is a BBGame for the framework.
+ * This is a BBGame main controller.
  */
 public class BBGame implements Game, BBStateListener {
 
@@ -66,6 +67,7 @@ public class BBGame implements Game, BBStateListener {
      */
     @Override
     public void cleanUpGame() {
+        // None required so far
     }
 
     /**
@@ -82,19 +84,19 @@ public class BBGame implements Game, BBStateListener {
                 break;
 
             case RUN:
-                BBEngine.GameLevel gl = bbStartUI.getSelection();
-                engine.setGameLevel(gl);
                 bbStartUI.removeStartUI();
 
-                // Functionality test displayed during development as BBGame
-                // does not provide return back to menu as of yet.
-                JOptionPane.showMessageDialog(null, "Running...", "MiPuz", JOptionPane.INFORMATION_MESSAGE);
-                /*
-                bbGameUI
-                        = new BBGameUI(gameParams.getGameDisplay(), engine);
+                BBEngine.GameLevel gl = bbStartUI.getSelection();
+                engine.setGameLevel(gl);
+
+                bbGameUI = new BBGameUI(gameParams.getGameDisplay(),
+                        engine, this);
                 bbGameUI.runGame();
-                */
-                gameParams.getGameEnd().finished();
+                break;
+
+            case GAME_OVER:
+                bbGameUI.removeGameUI();
+                bbStartUI.askGameLevel();
                 break;
         }
     }

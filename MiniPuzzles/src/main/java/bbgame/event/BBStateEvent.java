@@ -1,4 +1,4 @@
-package bbgame;
+package bbgame.event;
 
 import java.util.EventObject;
 
@@ -10,8 +10,7 @@ public class BBStateEvent extends EventObject {
     private final BBStates.State bbState;
 
     /**
-     * This is default event constructor that passes state information to
-     * listeners.
+     * This is default event constructor storing custom event information.
      *
      * @param source of event
      * @param bbState state information

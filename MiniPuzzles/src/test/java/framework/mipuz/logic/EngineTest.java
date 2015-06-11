@@ -36,7 +36,7 @@ public class EngineTest {
             try {
                 gamesField.setAccessible(true);
                 assertNotNull(gamesField.get(engine));
-                assertEquals(1, engine.numberOfGames());
+                assertEquals(2, engine.numberOfGames());
             } catch (IllegalArgumentException e) {
                 System.out.println("Illegal argument: " + e.toString());
             } catch (SecurityException | IllegalAccessException e) {

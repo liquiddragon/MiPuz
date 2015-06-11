@@ -27,6 +27,9 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <compilerArgs>
+                        <arg>-Xlint:unchecked</arg>
+                    </compilerArgs>
                 </configuration>
                 <version>3.2</version>
             </plugin>
@@ -39,11 +42,15 @@
                         <param>framework.mipuz.logic.*</param>
                         <param>bbgame.logic.*</param>
                         <param>bbgame.BBGame</param>
+                        <param>mmgame.logic.*</param>
+                        <param>mmgame.MMGame</param>
                     </targetClasses>
                     <targetTests>
                         <param>framework.mipuz.logic.*</param>
                         <param>bbgame.logic.*</param>
                         <param>bbgame.*</param>
+                        <param>mmgame.logic.*</param>
+                        <param>mmgame.*</param>
                     </targetTests>
                 </configuration>
             </plugin>

@@ -1,5 +1,6 @@
 package framework.mipuz.ui;
 
+import framework.utilities.GBC;
 import framework.mipuz.game.GameEnd;
 import framework.mipuz.game.GameInfo;
 import framework.mipuz.game.GameParameters;
@@ -10,13 +11,13 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -84,6 +85,7 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
 
         // Play game button construction
         JButton playGame = new JButton(cmdPlayGame);
+        playGame.setMnemonic(KeyEvent.VK_P);
         playGame.addActionListener(this);
         gameMenu.add(playGame, BorderLayout.PAGE_END);
 
