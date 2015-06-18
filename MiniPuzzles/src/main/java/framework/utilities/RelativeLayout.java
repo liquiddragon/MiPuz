@@ -793,7 +793,7 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable {
      * There is no maximum.
      *
      * @param target
-     * @return
+     * @return maximum dimension object
      */
     @Override
     public Dimension maximumLayoutSize(Container target) {
@@ -804,7 +804,7 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable {
      * Returns the alignment along the x axis. Use center alignment.
      *
      * @param parent
-     * @return
+     * @return centre alignment value
      */
     @Override
     public float getLayoutAlignmentX(Container parent) {
@@ -815,7 +815,7 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable {
      * Returns the alignment along the y axis. Use center alignment.
      *
      * @param parent
-     * @return
+     * @return centre alignment value
      */
     @Override
     public float getLayoutAlignmentY(Container parent) {

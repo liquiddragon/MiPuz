@@ -1,3 +1,6 @@
+/**
+ * This is BBGame shell.
+ */
 package bbgame;
 
 import bbgame.event.BBStateEvent;
@@ -23,15 +26,15 @@ public class BBGame implements Game, BBStateListener {
     private BBGameUI bbGameUI;
 
     /**
-     * This is default constructor.
+     * Create BBGame shell.
      */
     public BBGame() {
-        gicon = new ImageIcon("src/main/java/bbgame/resources/Binary-icon.png");
+        gicon = new ImageIcon(getClass().getResource("/Binary-icon.png"));
         gi = new GameInfo("BBGame", "This is a BB game", gicon);
     }
 
     /**
-     * This method provides GameInfo object of this game.
+     * Provide GameInfo object of this game.
      *
      * @return GameInfo object
      */
@@ -41,7 +44,7 @@ public class BBGame implements Game, BBStateListener {
     }
 
     /**
-     * This method performs game initialisation procedures.
+     * Perform game initialisation procedures.
      *
      * @param gameParams Framework parameters for the game
      * @return Whether initialisation was successful or not
@@ -55,7 +58,7 @@ public class BBGame implements Game, BBStateListener {
     }
 
     /**
-     * This method starts the game.
+     * Start the game.
      */
     @Override
     public void runGame() {
@@ -63,7 +66,7 @@ public class BBGame implements Game, BBStateListener {
     }
 
     /**
-     * This method will perform game cleanup, if any.
+     * Perform game cleanup, if any.
      */
     @Override
     public void cleanUpGame() {
@@ -71,7 +74,7 @@ public class BBGame implements Game, BBStateListener {
     }
 
     /**
-     * This method handles BBGame main state operations.
+     * Handle BBGame main state operations.
      *
      * @param event to be handled
      */

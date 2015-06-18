@@ -6,8 +6,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author esaharju
  */
 public class MMEngineTest {
 

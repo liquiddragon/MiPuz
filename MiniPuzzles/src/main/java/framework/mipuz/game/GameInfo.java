@@ -17,14 +17,14 @@ public class GameInfo {
     /**
      * The constructor to setup all information of game.
      *
-     * @param gname Short game name
-     * @param gdescription Description of the game
-     * @param gicon Games icon used in framework UI
+     * @param gameName Short game name
+     * @param gameDescription Description of the game
+     * @param gameIcon Games icon used in framework UI
      */
-    public GameInfo(String gname, String gdescription, ImageIcon gicon) {
-        this.shortName = gname;
-        this.description = gdescription;
-        this.icon = gicon;
+    public GameInfo(String gameName, String gameDescription, ImageIcon gameIcon) {
+        this.shortName = gameName;
+        this.description = gameDescription;
+        this.icon = gameIcon;
     }
 
     public String getShortName() {

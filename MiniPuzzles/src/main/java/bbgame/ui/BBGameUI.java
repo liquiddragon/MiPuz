@@ -1,3 +1,6 @@
+/**
+ * This is BBGame main game UI.
+ */
 package bbgame.ui;
 
 import bbgame.event.BBStateEvent;
@@ -26,19 +29,19 @@ import javax.swing.JToggleButton;
  */
 public class BBGameUI implements ActionListener {
 
-    private final String BB_ID = "BB";
-    private final String T_BBZERO = "0";
-    private final String T_BBONE = "1";
-    private final String GAME_OVER_ID = "GO";
-    private final String SHOW_HELP_ID = "SH";
-    private final String T_HELP = "Help";
-    private final String PANEL_TOP_ID = "TOP";
-    private final String PANEL_MAIN_ID = "MAIN";
-    private final String PANEL_BOTTOM_ID = "BOTTOM";
-    private final String T_CURRENT = "Current: ";
-    private final String T_TARGET = "Target: ";
-    private final String T_GAME_OVER = "Game over";
-    private final int ROW_LENGTH = 16;
+    private final String bbID = "BB";
+    private final String tBBZero = "0";
+    private final String tBBOne = "1";
+    private final String gameOverID = "GO";
+    private final String showHelpID = "SH";
+    private final String tHelp = "Help";
+    private final String panelTopID = "TOP";
+    private final String panelMainID = "MAIN";
+    private final String panelBottomID = "BOTTOM";
+    private final String tCurrent = "Current: ";
+    private final String tTarget = "Target: ";
+    private final String tGameOver = "Game over";
+    private final int rowLength = 16;
     private final int[] shortCutKeys;
     private final JPanel gamePanel;
     private final BBEngine engine;
@@ -50,7 +53,7 @@ public class BBGameUI implements ActionListener {
     private boolean hintsOn;
 
     /**
-     * This is BBGameUI default constructor.
+     * Create BBGame main UI.
      *
      * @param gameDisplay panel containing the game
      * @param engine game engine for running the logic
@@ -74,7 +77,7 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method creates main display and sets the game on the run.
+     * Create main display and sets the game running.
      */
     public void runGame() {
         createGameUI();
@@ -82,7 +85,7 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method removes game GUI elements.
+     * Removes game GUI elements.
      */
     public void removeGameUI() {
         gamePanel.removeAll();
@@ -90,7 +93,7 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method constructs the main display from its sub-components.
+     * Construct the main display from its sub-components.
      */
     private void createGameUI() {
         gamePanel.setLayout(new BorderLayout());
@@ -105,7 +108,7 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method creates top panel for game GUI.
+     * Create top panel for game GUI.
      *
      * @param guess value tried to obtain
      * @return JPanel containing top panel
@@ -114,17 +117,17 @@ public class BBGameUI implements ActionListener {
         JPanel topPanel = new JPanel(new RelativeLayout(RelativeLayout.X_AXIS));
 
         topPanel.add(Box.createGlue(), new Float(1));
-        JLabel bbGoal = new JLabel(T_TARGET + guess);
+        JLabel bbGoal = new JLabel(tTarget + guess);
         topPanel.add(bbGoal, (float) 0.4);
         topPanel.add(Box.createGlue(), new Float(1));
 
-        uiPanels.put(PANEL_TOP_ID, topPanel);
+        uiPanels.put(panelTopID, topPanel);
 
         return topPanel;
     }
 
     /**
-     * This method creates bottom panel for game GUI.
+     * Create bottom panel for game GUI.
      *
      * @return JPanel containing bottom panel
      */
@@ -133,21 +136,21 @@ public class BBGameUI implements ActionListener {
 
         bottomPanel.add(Box.createGlue(), new Float(1));
 
-        showHelp = new JButton(T_HELP);
-        showHelp.setActionCommand(SHOW_HELP_ID);
+        showHelp = new JButton(tHelp);
+        showHelp.setActionCommand(showHelpID);
         showHelp.setMnemonic(KeyEvent.VK_0);
         showHelp.addActionListener(this);
 
         bottomPanel.add(showHelp, (float) 0.6);
         bottomPanel.add(Box.createGlue(), new Float(1));
 
-        uiPanels.put(PANEL_BOTTOM_ID, bottomPanel);
+        uiPanels.put(panelBottomID, bottomPanel);
 
         return bottomPanel;
     }
 
     /**
-     * This method constructs main display button objects.
+     * Construct main display button objects.
      *
      * @return panel containing main display buttons
      */
@@ -165,50 +168,50 @@ public class BBGameUI implements ActionListener {
             bbPanel.add(gameButton, new GBC(column, row).setFill(GBC.HORIZONTAL).setWeight(1.0, 1.0));
 
             column++;
-            if (column % ROW_LENGTH == 0) {
+            if (column % rowLength == 0) {
                 row++;
                 column = 0;
             }
         }
-        uiPanels.put(PANEL_MAIN_ID, bbPanel);
+        uiPanels.put(panelMainID, bbPanel);
 
         return bbPanel;
     }
 
     /**
-     * This method creates JToggleButton for game GUI.
+     * Helper method to create JToggleButton for game GUI.
      *
      * @param i button index
      * @param keyIndex index to short cut keys table
      * @return JToggleButton created button
      */
     private JToggleButton createGameButton(int i, int keyIndex) {
-        JToggleButton gameButton = new JToggleButton(T_BBZERO, false);
+        JToggleButton gameButton = new JToggleButton(tBBZero, false);
 
         gameButton.addActionListener(this);
-        gameButton.setActionCommand(BB_ID + Integer.toString(i));
+        gameButton.setActionCommand(bbID + Integer.toString(i));
         gameButton.setMnemonic(shortCutKeys[keyIndex]);
 
         return gameButton;
     }
 
     /**
-     * This method handles main game GUI actions.
+     * Handler for the main game GUI actions.
      *
      * @param event to be handled
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (event.getActionCommand().startsWith(BB_ID) == true) {
+        if (event.getActionCommand().startsWith(bbID) == true) {
             handleGameCommands(event);
         } else {
             switch (event.getActionCommand()) {
-                case GAME_OVER_ID:
+                case gameOverID:
                     BBStateEvent stateEvent = new BBStateEvent(this, BBStates.State.GAME_OVER);
                     bbStateListener.bbStateReceived(stateEvent);
                     break;
 
-                case SHOW_HELP_ID:
+                case showHelpID:
                     handleHelpCommand();
                     break;
             }
@@ -216,19 +219,19 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method handles help command and displaying hints.
+     * Helper method to handle help command and displaying hints.
      */
     private void handleHelpCommand() {
         hintsOn = !hintsOn;
         if (hintsOn) {
-            showHelp.setText(T_CURRENT + currentGuess);
+            showHelp.setText(tCurrent + currentGuess);
         } else {
-            showHelp.setText(T_HELP);
+            showHelp.setText(tHelp);
         }
     }
 
     /**
-     * This method handles game related commands and updates display
+     * Helper method for handling game related commands and updating display
      * accordingly.
      *
      * @param event to be handled
@@ -244,7 +247,7 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method updates main display buttons based on event.
+     * Updates main display buttons based on event.
      *
      * @param event to be handled
      */
@@ -255,21 +258,21 @@ public class BBGameUI implements ActionListener {
 
                 if (bbToggle.isSelected()) {
                     currentGuess += value;
-                    bbToggle.setText(T_BBONE);
+                    bbToggle.setText(tBBOne);
                 } else {
                     currentGuess -= value;
-                    bbToggle.setText(T_BBZERO);
+                    bbToggle.setText(tBBZero);
                 }
 
                 if (hintsOn) {
-                    showHelp.setText(T_CURRENT + currentGuess);
+                    showHelp.setText(tCurrent + currentGuess);
                 }
             }
         }
     }
 
     /**
-     * This method obtains value based on selected button.
+     * Helper method for obtaining value based on selected button.
      *
      * @param bbToggle button pressed
      * @return value for selected button
@@ -277,7 +280,7 @@ public class BBGameUI implements ActionListener {
     private long obtainButtonValue(JToggleButton bbToggle) {
         String buttonValue;
 
-        buttonValue = new String(bbToggle.getActionCommand().substring(BB_ID.length()));
+        buttonValue = new String(bbToggle.getActionCommand().substring(bbID.length()));
 
         long value = 0;
         try {
@@ -291,7 +294,7 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method obtains a string formed by buttons.
+     * Helper method for obtaining a string formed by buttons.
      *
      * @param event to be handled
      * @return String containing user's guess
@@ -300,26 +303,27 @@ public class BBGameUI implements ActionListener {
         StringBuilder bbGuess = new StringBuilder();
         for (JToggleButton bbToggle : bbToggles) {
             if (bbToggle.isSelected()) {
-                bbGuess.append(T_BBONE);
+                bbGuess.append(tBBOne);
             } else {
-                bbGuess.append(T_BBZERO);
+                bbGuess.append(tBBZero);
             }
         }
         return bbGuess.toString();
     }
 
     /**
-     * This method handles Game Over message displaying and related action
-     * creation.
+     * Helper method for handling Game Over message displaying and related
+     * action creation.
      */
     private void displayGameOver() {
-        JPanel bottomPanel = uiPanels.get(PANEL_BOTTOM_ID);
+        JPanel bottomPanel = uiPanels.get(panelBottomID);
         bottomPanel.removeAll();
 
         bottomPanel.add(Box.createGlue(), new Float(1));
 
-        JButton gameOver = new JButton(T_GAME_OVER);
-        gameOver.setActionCommand(GAME_OVER_ID);
+        JButton gameOver = new JButton(tGameOver);
+        gameOver.setActionCommand(gameOverID);
+        gameOver.setMnemonic(KeyEvent.VK_O);
         gameOver.addActionListener(this);
 
         bottomPanel.add(gameOver, (float) 0.4);
@@ -329,7 +333,7 @@ public class BBGameUI implements ActionListener {
     }
 
     /**
-     * This method request update to the main game panel.
+     * Request update to the main game panel.
      */
     private void udpateMainGamePanel() {
         gamePanel.revalidate();

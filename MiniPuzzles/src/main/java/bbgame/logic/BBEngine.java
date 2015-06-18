@@ -1,25 +1,39 @@
+/**
+ * BBGame engine for running the game.
+ */
 package bbgame.logic;
 
 import java.util.Random;
 
 /**
- * This class contains BBGame logic.
+ * BBGame logic.
  *
  */
 public class BBEngine {
 
-    private final long VALUE_NOT_INITIALIZED = -1;
+    private final long valueNotInitialized = -1;
     private final Random randomizer;
-    private final int RADIX_BASE_TWO = 2;
+    private final int radixBaseTwo = 2;
     private GameLevel gameLevel;
     private long valueToBeGuessed;
 
     /**
-     * Game levels used for this game and related value limits.
+     * Game levels used for game and related value limits.
      */
     public enum GameLevel {
 
-        EASY(256, 8), MEDIUM(65536, 16), HARD(4294967296L, 32);
+        /**
+         * Easy level.
+         */
+        EASY(256, 8),
+        /**
+         * Medium level.
+         */
+        MEDIUM(65536, 16),
+        /**
+         * Hard level.
+         */
+        HARD(4294967296L, 32);
         private final long upperLimit;
         private final int nrOfBits;
 
@@ -28,10 +42,20 @@ public class BBEngine {
             nrOfBits = bits;
         }
 
+        /**
+         * Get maximum value limit corresponding to game level
+         *
+         * @return value limit
+         */
         public long getLimit() {
             return upperLimit;
         }
 
+        /**
+         * Get number of bits used corresponding to game level
+         *
+         * @return number of bits
+         */
         public int getBits() {
             return nrOfBits;
         }
@@ -42,20 +66,31 @@ public class BBEngine {
      */
     public enum CheckResult {
 
-        CORRECT, INCORRECT, INVALID_INPUT
+        /**
+         * Guess was correct.
+         */
+        CORRECT,
+        /**
+         * Guess was incorrect.
+         */
+        INCORRECT,
+        /**
+         * Game was not initialised or input was incorrect.
+         */
+        INVALID_INPUT
     }
 
     /**
-     * This is BBEngine default constructor.
+     * Construct BBEngine.
      */
     public BBEngine() {
         randomizer = new Random();
         gameLevel = GameLevel.EASY;
-        valueToBeGuessed = VALUE_NOT_INITIALIZED;
+        valueToBeGuessed = valueNotInitialized;
     }
 
     /**
-     * This method provides current game level.
+     * Provide current game level.
      *
      * @return GameLevel value
      */
@@ -64,7 +99,7 @@ public class BBEngine {
     }
 
     /**
-     * This method sets game level.
+     * Set game level.
      *
      * @param gameLevel GameLevel to be taken into use
      */
@@ -73,7 +108,7 @@ public class BBEngine {
     }
 
     /**
-     * This method provides new value for guessing.
+     * Provide new value to be guessed by player.
      *
      * @return value to be guessed
      */
@@ -83,7 +118,7 @@ public class BBEngine {
     }
 
     /**
-     * This method provides previously generated value.
+     * Provide previously generated value.
      *
      * @return previously generated guess value
      */
@@ -92,8 +127,8 @@ public class BBEngine {
     }
 
     /**
-     * This method validates guess against generated value. If obtainNewGuess
-     * method has not been called this method returns INVALID_INPUT as a result.
+     * Validates player guess against generated value. If obtainNewGuess method
+     * has not been called this method returns INVALID_INPUT as a result.
      *
      * @param guess to be validated
      * @return result of validation
@@ -101,11 +136,11 @@ public class BBEngine {
     public CheckResult checkGuess(String guess) {
         CheckResult result = CheckResult.INCORRECT;
 
-        if (valueToBeGuessed == VALUE_NOT_INITIALIZED) {
+        if (valueToBeGuessed == valueNotInitialized) {
             result = CheckResult.INVALID_INPUT;
         } else {
             try {
-                long guessNr = Integer.parseInt(guess, RADIX_BASE_TWO);
+                long guessNr = Integer.parseInt(guess, radixBaseTwo);
 
                 if (guessNr == valueToBeGuessed) {
                     result = CheckResult.CORRECT;
@@ -118,7 +153,7 @@ public class BBEngine {
     }
 
     /**
-     * This method generates random value based on game level.
+     * Helper method for generating random value based on game level.
      */
     private void setUpGuess() {
         long scaler = 0;

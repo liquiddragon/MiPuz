@@ -1,7 +1,10 @@
+/**
+ * Custom cell renderer.
+ */
 package framework.mipuz.ui;
 
 import framework.mipuz.game.GameInfo;
-import static framework.mipuz.utilities.GraphicsUtil.scaleImageIcon;
+import static framework.utilities.GraphicsUtil.scaleImageIcon;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.BorderFactory;
@@ -13,7 +16,10 @@ import javax.swing.ListCellRenderer;
  * Custom cell renderer class for presenting GameInfo objects in list.
  */
 public class JLabelCellRenderer extends JLabel implements ListCellRenderer<Object> {
-    
+
+    /**
+     * Construct cell renderer object.
+     */
     public JLabelCellRenderer() {
         setOpaque(true);
     }
@@ -32,23 +38,22 @@ public class JLabelCellRenderer extends JLabel implements ListCellRenderer<Objec
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
-        
+
         if (value instanceof GameInfo) {
             GameInfo gi = (GameInfo) value;
             setText(gi.getShortName());
             setToolTipText(gi.getDescription());
             setIcon(scaleImageIcon(gi.getIcon(), 32, 32));
-            
+
             handleSelection(isSelected, list);
             handleFocus(cellHasFocus, list);
         }
-        
+
         return this;
     }
 
     /**
-     * This method handles cell painting part regarding to given cell selection
-     * state.
+     * Handle cell painting part regarding to given cell selection state.
      *
      * @param isSelected True if the specified cell was selected
      * @param list JList being painted
@@ -56,7 +61,7 @@ public class JLabelCellRenderer extends JLabel implements ListCellRenderer<Objec
     private void handleSelection(boolean isSelected, JList<?> list) {
         Color background;
         Color foreground;
-        
+
         if (isSelected) {
             background = new Color(list.getSelectionBackground().getRGB());
             foreground = new Color(list.getSelectionForeground().getRGB());
@@ -64,15 +69,14 @@ public class JLabelCellRenderer extends JLabel implements ListCellRenderer<Objec
             background = new Color(list.getBackground().getRGB());
             foreground = new Color(list.getForeground().getRGB());
         }
-        
+
         setBackground(background);
         setForeground(foreground);
-        
+
     }
 
     /**
-     * This method handles cell painting part regarding to given cell focus
-     * state.
+     * Handle cell painting part regarding to given cell focus state.
      *
      * @param cellHasFocus True if the specified cell has the focus
      * @param list JList being painted

@@ -1,12 +1,15 @@
+/**
+ * BBGame state event listener interface.
+ */
 package bbgame.event;
 
 /**
- * This is state interface for listeners interested in the BBGame states.
+ * Interface for listeners interested in the BBGame states.
  */
 public interface BBStateListener {
 
     /**
-     * This method allow listener to receive game state information.
+     * Listener interface.
      *
      * @param event state information
      */

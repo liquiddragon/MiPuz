@@ -1,3 +1,6 @@
+/**
+ * This is MMGame shell.
+ */
 package mmgame;
 
 import framework.mipuz.game.Game;
@@ -7,10 +10,11 @@ import javax.swing.ImageIcon;
 import mmgame.event.MMStateEvent;
 import mmgame.event.MMStateListener;
 import mmgame.logic.MMEngine;
+import mmgame.ui.MMGameUI;
 import mmgame.ui.MMStartUI;
 
 /**
- * This is a MMGame for the framework.
+ * This is a MMGame main controller.
  */
 public class MMGame implements Game, MMStateListener {
 
@@ -19,17 +23,18 @@ public class MMGame implements Game, MMStateListener {
     private GameParameters gameParams;
     private MMEngine engine;
     private MMStartUI mmStartUI;
+    private MMGameUI mmGameUI;
 
     /**
-     * This is default constructor.
+     * Create MMGame shell.
      */
     public MMGame() {
-        gicon = new ImageIcon("src/main/java/mmgame/resources/MM-icon.png");
+        gicon = new ImageIcon(getClass().getResource("/MM-icon.png"));
         gi = new GameInfo("MMGame", "This is a MM game", gicon);
     }
 
     /**
-     * This method provides GameInfo object of this game.
+     * Provide GameInfo object of this game.
      *
      * @return GameInfo object
      */
@@ -38,6 +43,12 @@ public class MMGame implements Game, MMStateListener {
         return gi;
     }
 
+    /**
+     * Perform game initialisation procedures.
+     *
+     * @param gameParams Framework parameters for the game
+     * @return Whether initialisation was successful or not
+     */
     @Override
     public boolean initGame(GameParameters gameParams) {
         this.gameParams = gameParams;
@@ -47,18 +58,24 @@ public class MMGame implements Game, MMStateListener {
         return true;
     }
 
+    /**
+     * Start the game.
+     */
     @Override
     public void runGame() {
         mmStartUI.askGameLevel();
     }
 
+    /**
+     * Perform game cleanup, if any.
+     */
     @Override
     public void cleanUpGame() {
-        
+        // None required so far
     }
 
     /**
-     * This method handles MMGame main state operations.
+     * Handle MMGame main state operations.
      *
      * @param event to be handled
      */
@@ -71,9 +88,19 @@ public class MMGame implements Game, MMStateListener {
                 break;
 
             case RUN:
+                mmStartUI.removeStartUI();
+
+                MMEngine.GameLevel gl = mmStartUI.getSelection();
+                engine.setGameLevel(gl);
+
+                mmGameUI = new MMGameUI(gameParams.getGameDisplay(),
+                        engine, this);
+                mmGameUI.runGame();
                 break;
 
             case GAME_OVER:
+                mmGameUI.removeGameUI();
+                mmStartUI.askGameLevel();
                 break;
         }
     }

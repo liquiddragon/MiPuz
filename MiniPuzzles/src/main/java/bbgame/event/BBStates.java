@@ -1,3 +1,6 @@
+/**
+ * BBGame states.
+ */
 package bbgame.event;
 
 /**
@@ -5,8 +8,22 @@ package bbgame.event;
  */
 public class BBStates {
 
+    /**
+     * States.
+     */
     public enum State {
 
-        RUN, RETURN_TO_MENU, GAME_OVER
+        /**
+         * Run the game.
+         */
+        RUN,
+        /**
+         * Return to the main menu.
+         */
+        RETURN_TO_MENU,
+        /**
+         * The game is over.
+         */
+        GAME_OVER
     }
 }

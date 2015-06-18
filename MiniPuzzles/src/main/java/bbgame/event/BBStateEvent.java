@@ -1,16 +1,19 @@
+/**
+ * BBGame custom state event.
+ */
 package bbgame.event;
 
 import java.util.EventObject;
 
 /**
- * This is the BBGame custom event for game state operations.
+ * BBGame custom event for game state operations.
  */
 public class BBStateEvent extends EventObject {
 
     private final BBStates.State bbState;
 
     /**
-     * This is default event constructor storing custom event information.
+     * Construct custom event with given state.
      *
      * @param source of event
      * @param bbState state information
@@ -21,7 +24,7 @@ public class BBStateEvent extends EventObject {
     }
 
     /**
-     * This method allows recipient to obtain state that was passed to it.
+     * Obtain state that this event represents.
      *
      * @return state information
      */

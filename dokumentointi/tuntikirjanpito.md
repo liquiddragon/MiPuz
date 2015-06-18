@@ -73,3 +73,12 @@ MMGame luokkien toteutusta ja testausta, 5t
 11.6
 Refaktorointia ja dokumenttien päivitystä, 3t
 
+16.6
+MMGame luokkien testausta ja käyttöliittymän suunnittelua, 2t
+
+17.6
+MMGame käyttöliittymän toteutusta ja testausta sekä dokumentaation päivitystä, 10t
+
+18.6
+Dokumentaation, JavaDoc, Checkstyle, koodin tarkistusta ja korjausta lopullista palautusta varten, 6t
+

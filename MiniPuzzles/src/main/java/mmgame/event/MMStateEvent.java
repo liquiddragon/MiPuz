@@ -1,16 +1,19 @@
+/**
+ * MMGame custom state event.
+ */
 package mmgame.event;
 
 import java.util.EventObject;
 
 /**
- * This is the MMGame custom event for game state operations.
+ * MMGame custom event for game state operations.
  */
 public class MMStateEvent extends EventObject {
 
     private final MMStates.State mmState;
 
     /**
-     * This is default event constructor storing custom event information.
+     * Construct custom event with given state.
      *
      * @param source of event
      * @param mmState state information
@@ -21,7 +24,7 @@ public class MMStateEvent extends EventObject {
     }
 
     /**
-     * This method allows recipient to obtain state that was passed to it.
+     * Obtain state that this event represents.
      *
      * @return state information
      */

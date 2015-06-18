@@ -205,7 +205,7 @@ public class MMGameTest {
 
         MMStateEvent mmevent = new MMStateEvent(this, MMStates.State.RUN);
         mmGame.mmStateReceived(mmevent);
-        assertEquals(3, testPanel.getComponentCount());
+        assertEquals(0, testPanel.getComponentCount());
 
         Field engineField = obtainMMGameClassPrivateField("engine");
         try {
@@ -213,7 +213,6 @@ public class MMGameTest {
             MMEngine mmEngine = (MMEngine) engineField.get(mmGame);
             assertEquals(MMEngine.GameLevel.EASY, mmEngine.getGameLevel());
             assertEquals(1, MMEngine.GameLevel.EASY.getLevelValue());
-            //assertNotEquals(MMEngine.CheckResult.INVALID_INPUT, mmEngine.obtainNewGuess());
         } catch (IllegalArgumentException e) {
             System.out.println("Illegal argument: " + e.toString());
         } catch (SecurityException | IllegalAccessException e) {
@@ -250,8 +249,11 @@ public class MMGameTest {
 
         mmGame.runGame();
 
-        MMStateEvent mmevent = new MMStateEvent(this, MMStates.State.GAME_OVER);
-        //mmGame.mmStateReceived(mmevent);
+        MMStateEvent mmevent = new MMStateEvent(this, MMStates.State.RUN);
+        mmGame.mmStateReceived(mmevent);
+
+        mmevent = new MMStateEvent(this, MMStates.State.GAME_OVER);
+        mmGame.mmStateReceived(mmevent);
         assertEquals(3, testPanel.getComponentCount());
     }
 

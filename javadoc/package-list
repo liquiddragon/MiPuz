@@ -1,0 +1,13 @@
+bbgame
+bbgame.event
+bbgame.logic
+bbgame.ui
+framework.mipuz
+framework.mipuz.game
+framework.mipuz.logic
+framework.mipuz.ui
+framework.utilities
+mmgame
+mmgame.event
+mmgame.logic
+mmgame.ui

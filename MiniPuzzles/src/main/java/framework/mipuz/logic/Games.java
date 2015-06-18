@@ -1,3 +1,6 @@
+/**
+ * Manager for games that framework hosts.
+ */
 package framework.mipuz.logic;
 
 import framework.mipuz.game.Game;
@@ -8,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class manages games implementing Game interface.
+ * Manage games implementing Game interface.
  *
  */
 public class Games {
@@ -17,7 +20,7 @@ public class Games {
     private final Map<Integer, Game> games;
 
     /**
-     * This is framework game default constructor.
+     * Construct framework game manager.
      */
     public Games() {
         gamesInfo = new ArrayList<>();
@@ -53,7 +56,7 @@ public class Games {
     }
 
     /**
-     * This method retrieves requested game object.
+     * Retrieve requested game object.
      *
      * @param gi GameInfo for requested game
      * @return Game if it was found, otherwise null

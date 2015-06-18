@@ -1,3 +1,6 @@
+/**
+ * BBGame start up UI.
+ */
 package bbgame.ui;
 
 import bbgame.logic.BBEngine;
@@ -17,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 /**
- * This class implements BBGame starting GUI.
+ * BBGame starting GUI.
  */
 public class BBStartUI implements ActionListener {
 
@@ -29,7 +32,7 @@ public class BBStartUI implements ActionListener {
     private BBEngine.GameLevel gameLevel;
 
     /**
-     * This is BBStartUI default constructor.
+     * Construct BBStart GUI.
      *
      * @param gameDisplay panel containing the game
      * @param bbStateListener this GUI event listener
@@ -40,7 +43,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method creates game starting GUI and sets it running.
+     * Create game starting GUI and set it running.
      */
     public void askGameLevel() {
         createAskGameLevelUI();
@@ -48,7 +51,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method removes game starting GUI from game panel.
+     * Remove game starting GUI from game panel.
      */
     public void removeStartUI() {
         gamePanel.removeAll();
@@ -56,7 +59,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method returns player selected game level.
+     * Return player selected game level.
      *
      * @return GameLevel selected
      */
@@ -65,7 +68,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method constructs main starting game GUI.
+     * Helper method for constructing main starting game GUI.
      */
     private void createAskGameLevelUI() {
         gamePanel.setLayout(new BorderLayout());
@@ -81,7 +84,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method creates top panel for start GUI.
+     * Create top panel for start GUI.
      *
      * @return JPanel containing top panel
      */
@@ -90,14 +93,14 @@ public class BBStartUI implements ActionListener {
 
         topPanel.add(Box.createGlue(), new Float(1));
         JLabel title = new JLabel(promptSelectLevel);
-        topPanel.add(title, (float) 0.2);
+        topPanel.add(title, (float) 0.4);
         topPanel.add(Box.createGlue(), new Float(1));
 
         return topPanel;
     }
 
     /**
-     * This method creates start GUI command buttons.
+     * Create start GUI command buttons.
      *
      * @return panel containing command buttons
      */
@@ -114,7 +117,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This is helper method for creating command buttons.
+     * Helper method for creating command buttons.
      *
      * @param command name of the command to display
      * @param cmdKey shortcut key for the command
@@ -131,7 +134,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method creates game level selection buttons for main GUI.
+     * Create game level selection buttons for main GUI.
      *
      * @return panel contains game level selection buttons
      */
@@ -159,7 +162,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method is private helper routine to create JRadioButtons.
+     * Helper method for creating JRadioButtons used on GUI.
      *
      * @param name of the button and action command
      * @param mnemonic for keyboard access
@@ -179,7 +182,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method handles starting game GUI actions.
+     * Starting game GUI actions handler.
      *
      * @param event to be handled
      */
@@ -208,7 +211,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method sends BBGame state event.
+     * Helper method for sending BBGame state event.
      *
      * @param state to be sent to listener
      */
@@ -218,7 +221,7 @@ public class BBStartUI implements ActionListener {
     }
 
     /**
-     * This method request update to the main game panel.
+     * Request update to the main game panel.
      */
     private void udpateMainGamePanel() {
         gamePanel.revalidate();

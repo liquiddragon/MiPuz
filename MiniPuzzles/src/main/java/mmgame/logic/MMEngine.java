@@ -1,3 +1,6 @@
+/**
+ * MMGame engine for running the game.
+ */
 package mmgame.logic;
 
 import java.util.ArrayList;
@@ -5,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This class contains MMGame logic.
+ * MMGame logic.
  *
  */
 public class MMEngine {
@@ -15,11 +18,22 @@ public class MMEngine {
     private GameLevel gameLevel;
 
     /**
-     * Game levels used for this game.
+     * Game levels used for game and related value limits.
      */
     public enum GameLevel {
 
-        EASY(6, 1), MEDIUM(8, 2), HARD(10, 3);
+        /**
+         * Easy level.
+         */
+        EASY(6, 1),
+        /**
+         * Medium level.
+         */
+        MEDIUM(8, 2),
+        /**
+         * Hard level.
+         */
+        HARD(10, 3);
 
         private final int itemCount;
         private final int numericalValue;
@@ -43,11 +57,22 @@ public class MMEngine {
      */
     public enum CheckResult {
 
-        CORRECT, INCORRECT, NOT_INITIALIZED
+        /**
+         * Guess was correct.
+         */
+        CORRECT,
+        /**
+         * Guess was incorrect.
+         */
+        INCORRECT,
+        /**
+         * Game was not initialised or input was incorrect.
+         */
+        NOT_INITIALIZED
     }
 
     /**
-     * This is MMEngine default constructor.
+     * Construct MMEngine.
      */
     public MMEngine() {
         randomizer = new Random();
@@ -56,7 +81,7 @@ public class MMEngine {
     }
 
     /**
-     * This method provides current game level.
+     * Provide current game level.
      *
      * @return GameLevel value
      */
@@ -65,7 +90,7 @@ public class MMEngine {
     }
 
     /**
-     * This method sets game level.
+     * Set game level.
      *
      * @param gameLevel GameLevel to be taken into use
      */
@@ -74,7 +99,7 @@ public class MMEngine {
     }
 
     /**
-     * This method initialises new game.
+     * Initialises a new game.
      */
     public void startNewGame() {
         if (!gameNumbers.isEmpty()) {
@@ -85,7 +110,7 @@ public class MMEngine {
     }
 
     /**
-     * This method returns requested amount of randomised numbers.
+     * Provide requested amount of numbers randomised for the game.
      *
      * @param count how many numbers are requested
      * @return List of numbers requested
@@ -105,8 +130,8 @@ public class MMEngine {
     }
 
     /**
-     * This method checks guess correctness. If partial is above zero then only
-     * given entries are checked. If partial is zero then all given entries are
+     * Check player guess correctness. If partial is above zero then only given
+     * entries are checked. If partial is zero then all given entries are
      * checked.
      *
      * @param numbers to be checked
@@ -139,26 +164,19 @@ public class MMEngine {
     }
 
     /**
-     * This method creates an array containing GameLevel required amount of
+     * Helper method creating an array containing GameLevel required amount of
      * numbers in random order.
      */
     private void fillNumbers() {
-        List<Integer> chooseFrom = new ArrayList<>();
         int numbersNeeded = getNumberCount();
 
         for (int i = 0; i < numbersNeeded; i++) {
-            chooseFrom.add(i);
-        }
-
-        while (!chooseFrom.isEmpty()) {
-            int index = randomizer.nextInt(chooseFrom.size());
-            gameNumbers.add(chooseFrom.get(index));
-            chooseFrom.remove(index);
+            gameNumbers.add(randomizer.nextInt(numbersNeeded));
         }
     }
 
     /**
-     * This method returns how many numbers are required per game level.
+     * Helper method returning how many numbers are required per game level.
      *
      * @return Amount of numbers or zero if GameLevel is not set
      */

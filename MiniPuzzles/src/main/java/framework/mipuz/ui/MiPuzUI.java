@@ -1,3 +1,6 @@
+/**
+ * Framework GUI.
+ */
 package framework.mipuz.ui;
 
 import framework.utilities.GBC;
@@ -23,6 +26,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
+/**
+ * This class implements framework main GUI.
+ */
 public class MiPuzUI implements Runnable, ActionListener, GameEnd {
 
     private final String cmdPlayGame = "Play game";
@@ -34,14 +40,14 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
     private JPanel gameMenu;
 
     /**
-     * This is game framework default constructor.
+     * Game framework default constructor.
      */
     public MiPuzUI() {
         engine = new Engine();
     }
 
     /**
-     * This method gets framework running.
+     * Get framework running.
      */
     @Override
     public void run() {
@@ -49,7 +55,7 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
     }
 
     /**
-     * This method creates application main window.
+     * Create application main window.
      */
     private void creatMainWindow() {
 
@@ -90,12 +96,11 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
         gameMenu.add(playGame, BorderLayout.PAGE_END);
 
         // Add menu panel to main window panel
-        // TO DO: Replace hard coded values with constants
         pane.add(gameMenu, new GBC(0, 0).setAnchor(GBC.LAST_LINE_START).setFill(GBC.BOTH).setWeight(0.1, 1.0));
     }
 
     /**
-     * This method creates JList containing available games.
+     * Create JList containing available games.
      *
      * @return JScrollPane contained JList of available games
      */
@@ -111,7 +116,7 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
     }
 
     /**
-     * This method obtains available games and creates list from them.
+     * Obtain available games and creates list from them.
      *
      * @return List of available games
      */
@@ -127,7 +132,7 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
     }
 
     /**
-     * This method creates main panel that will contain game to be played.
+     * Create main panel that will contain game to be played.
      *
      * @param pane Main window panel that will contain main panel
      */
@@ -136,12 +141,11 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
         gameDisplay = new JPanel();
 
         // Add main panel to main window panel
-        // TO DO: Replace hard coded values with constants
         pane.add(gameDisplay, new GBC(1, 0).setAnchor(GBC.FIRST_LINE_START).setFill(GBC.BOTH).setWeight(0.9, 1.0));
     }
 
     /**
-     * This is a helper method for obtaining default windows size for the GUI.
+     * Helper method for obtaining default windows size for the GUI.
      *
      * @return Dimension object containing default windows size
      */
@@ -156,8 +160,7 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
     }
 
     /**
-     * This is a test action listener method at the moment to ensured that GUI
-     * part works as expected.
+     * Action listener method for handling GUI events.
      *
      * @param ae ActionEvent received
      */
@@ -177,12 +180,10 @@ public class MiPuzUI implements Runnable, ActionListener, GameEnd {
     }
 
     /**
-     * This method returns control to main framework.
+     * Return control to main framework from a game.
      */
     @Override
     public void finished() {
-        // Functionality test display during development
-        //JOptionPane.showMessageDialog(mainFrame, "Game over!", "MiPuz", JOptionPane.INFORMATION_MESSAGE);
         gameMenu.setVisible(true);
     }
 }

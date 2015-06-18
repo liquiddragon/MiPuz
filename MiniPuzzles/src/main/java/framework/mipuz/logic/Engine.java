@@ -1,3 +1,6 @@
+/**
+ * Contains framework engine.
+ */
 package framework.mipuz.logic;
 
 import bbgame.BBGame;
@@ -16,7 +19,7 @@ public class Engine {
     private final Games games;
 
     /**
-     * This is framework engine default constructor.
+     * Construct framework engine.
      */
     public Engine() {
         games = new Games();
@@ -25,7 +28,7 @@ public class Engine {
     }
 
     /**
-     * This method creates and add games into game manager.
+     * Create and add games into game manager.
      *
      * The game classes are actually created by this method and stored in a
      * list. This means that most of normal constructor operations should be
@@ -37,7 +40,7 @@ public class Engine {
     }
 
     /**
-     * This method returns number of games currently available.
+     * Return number of games currently available.
      *
      * @return number of game available
      */
@@ -46,8 +49,7 @@ public class Engine {
     }
 
     /**
-     * This method provides Iterator access to all games managed by game
-     * manager.
+     * Provide Iterator access to all games managed by game manager.
      *
      * @return Iterator to game list
      */
@@ -56,7 +58,7 @@ public class Engine {
     }
 
     /**
-     * This method handles running of selected game.
+     * Handle running of selected game.
      *
      * @param gi GameInfo object of requested game to be played
      * @param gameParams parameters for the game to use to function in given
